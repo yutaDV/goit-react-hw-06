@@ -1,7 +1,9 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { nanoid } from 'nanoid';
-import css from './ContactForm.module.css'; 
+import { useDispatch } from 'react-redux';
+import { addContact } from '../../redux/contactsSlice'; // Імпорт екшену
+import css from './ContactForm.module.css';
 
 const validationSchema = Yup.object({
   name: Yup.string()
@@ -14,38 +16,39 @@ const validationSchema = Yup.object({
     .required('required'),
 });
 
-const ContactForm = ({ onAddContact }) => {
+const ContactForm = () => {
+  const dispatch = useDispatch(); //  хук dispatch
+
   const handleSubmit = (values, { resetForm }) => {
     const newContact = {
       id: nanoid(),
       name: values.name,
       number: values.number,
     };
-    onAddContact(newContact);
+    dispatch(addContact(newContact)); //  екшен у Redux
     resetForm();
   };
 
   return (
     <Formik
-  initialValues={{ name: '', number: '' }}
-  validationSchema={validationSchema}
-  onSubmit={handleSubmit}
->
-  <Form className={css.form}>
-    <div className={css.formGroup}>
-      <label htmlFor="name">Name</label>
-      <Field type="text" id="name" name="name" className={css.formFild} />
-      <ErrorMessage name="name" component="div" className={css.error} />
-    </div>
-    <div className={css.formGroup}>
-      <label htmlFor="number">Number</label>
-      <Field type="text" id="number" name="number" className={css.formFild}/>
-      <ErrorMessage name="number" component="div" className={css.error} />
-    </div>
-    <button type="submit">Add Contact</button>
-  </Form>
-</Formik>
-
+      initialValues={{ name: '', number: '' }}
+      validationSchema={validationSchema}
+      onSubmit={handleSubmit}
+    >
+      <Form className={css.form}>
+        <div className={css.formGroup}>
+          <label htmlFor="name">Name</label>
+          <Field type="text" id="name" name="name" className={css.formFild} />
+          <ErrorMessage name="name" component="div" className={css.error} />
+        </div>
+        <div className={css.formGroup}>
+          <label htmlFor="number">Number</label>
+          <Field type="text" id="number" name="number" className={css.formFild} />
+          <ErrorMessage name="number" component="div" className={css.error} />
+        </div>
+        <button type="submit">Add Contact</button>
+      </Form>
+    </Formik>
   );
 };
 
