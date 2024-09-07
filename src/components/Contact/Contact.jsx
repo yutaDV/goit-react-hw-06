@@ -1,12 +1,12 @@
 import { useDispatch } from 'react-redux';
-import { deleteContact } from '../../redux/contactsSlice'; // Імпорт екшену
+import { deleteContact } from '../../redux/contactsSlice';
 import css from './Contact.module.css';
 
-const Contact = ({ name, number, id }) => {
+const Contact = ({ id, name, number }) => { // Переконайся, що тут є id
   const dispatch = useDispatch();
 
   const handleDelete = () => {
-    dispatch(deleteContact(id)); // Видаляємо контакт через Redux
+    dispatch(deleteContact(id)); // Використовуй правильний id для видалення
   };
 
   return (

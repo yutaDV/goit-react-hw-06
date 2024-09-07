@@ -1,28 +1,22 @@
-import { useSelector, useDispatch } from 'react-redux';
-import { selectContacts } from '../../redux/contactsSlice'; // Імпорти з Redux
-import { selectNameFilter } from '../../redux/filtersSlice'; // Імпорт селектора для фільтра
+import { useSelector } from 'react-redux';
+import { selectContacts } from '../../redux/contactsSlice';
+import { selectNameFilter } from '../../redux/filtersSlice';
 import Contact from "../Contact/Contact";
 import css from './ContactList.module.css';
 
 const ContactList = () => {
-  const contacts = useSelector(selectContacts); 
-  const filter = useSelector(selectNameFilter); 
-  const dispatch = useDispatch();
+  const contacts = useSelector(selectContacts);
+  const filter = useSelector(selectNameFilter);
 
-  // Фільтруємо контакти за значенням фільтра
   const filteredContacts = contacts.filter(contact =>
     contact.name.toLowerCase().includes(filter.toLowerCase())
   );
 
-  const handleDelete = (id) => {
-    dispatch(deleteContact(id)); // Видаляємо контакт через Redux
-  };
-
   return (
     <ul className={css.contactList}>
-      {filteredContacts.map(({ name, number, id }) => (
+      {filteredContacts.map(({ id, name, number }) => (
         <li key={id}>
-          <Contact name={name} number={number} onDelete={() => handleDelete(id)} />
+          <Contact id={id} name={name} number={number} />
         </li>
       ))}
     </ul>
@@ -30,4 +24,7 @@ const ContactList = () => {
 };
 
 export default ContactList;
+
+
+
 
